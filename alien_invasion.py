@@ -1,51 +1,45 @@
+# alien_invasion.py
+# Author: Labiba Alam
+# Date: 4/1/25
+# Lab 12 - Option 1: Reposition the Spaceship (Changing Gameplay)
+# Description: This is the main game file. It initializes the game window,
+# checks user inputs, updates object positions, and draws everything on screen.
+
 import sys
 import pygame
 from settings import Settings
 from ship import Ship
 from arsenal import Arsenal
 
-class AlienInvasion:
 
-    def __init__(self) -> None:
+class AlienInvasion:
+    """Main class to manage game behavior."""
+
+    def __init__(self):
+        """Initialize the game, settings, and create game resources."""
         pygame.init()
         self.settings = Settings()
 
         self.screen = pygame.display.set_mode(
-            (self.settings.screen_w, self.settings.screen_h)
-            )
+            (self.settings.screen_w, self.settings.screen_h))
         pygame.display.set_caption(self.settings.name)
 
-        self.bg = pygame.image.load(self.settings.bg_file)
-        self.bg = pygame.transform.scale(self.bg, 
-            (self.settings.screen_w, self.settings.screen_h)
-            )
-        
-        self.running = True
         self.clock = pygame.time.Clock()
+        self.running = True
 
-        pygame.mixer.init()
-        self.laser_sound = pygame.mixer.Sound(self.settings.laser_sound)
-        self.laser_sound.set_volume(0.7)
-
-                   
         self.ship = Ship(self, Arsenal(self))
-   
-    def run_game(self) ->None:
-        # game loop
+        self.laser_sound = pygame.mixer.Sound(self.settings.laser_sound)
+
+    def run_game(self):
+        """Start the main game loop."""
         while self.running:
             self._check_events()
             self.ship.update()
-            self.ship.arsenal.update_arsenal()
             self._update_screen()
             self.clock.tick(self.settings.FPS)
 
-    def _update_screen(self) -> None:
-        self.screen.blit(self.bg, (0,0))
-        self.ship.draw()
-        self.ship.arsenal.draw()
-        pygame.display.flip()
-
-    def _check_events(self) -> None:
+    def _check_events(self):
+        """Respond to keypresses and other events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -56,20 +50,14 @@ class AlienInvasion:
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
 
-    def _check_keyup_events(self, event) -> None:
-        if event.key == pygame.K_RIGHT:
-            self.ship.moving_right=False
-        elif event.key == pygame.K_LEFT:
-            self.ship.moving_left=False
-    
-    
-    def _check_keydown_events(self, event) -> None:
-        if event.key == pygame.K_RIGHT:
-            self.ship.moving_right=True
-        elif event.key == pygame.K_LEFT:
-            self.ship.moving_left=True
+    def _check_keydown_events(self, event):
+        """Handle keydown events."""
+        if event.key == pygame.K_UP:
+            self.ship.moving_up = True
+        elif event.key == pygame.K_DOWN:
+            self.ship.moving_down = True
         elif event.key == pygame.K_SPACE:
-            if self.ship.fire():
+            if self.ship.fire_laser():
                 self.laser_sound.play()
                 self.laser_sound.fadeout(250)
         elif event.key == pygame.K_q:
@@ -77,8 +65,21 @@ class AlienInvasion:
             pygame.quit()
             sys.exit()
 
+    def _check_keyup_events(self, event):
+        """Handle keyup events."""
+        if event.key == pygame.K_UP:
+            self.ship.moving_up = False
+        elif event.key == pygame.K_DOWN:
+            self.ship.moving_down = False
+
+    def _update_screen(self):
+        """Redraw the screen during each pass through the loop."""
+        self.screen.blit(self.settings.bg_file, (0, 0))
+        self.ship.draw()
+        self.ship.arsenal.draw()
+        pygame.display.flip()
 
 
 if __name__ == '__main__':
-    ai=AlienInvasion()
+    ai = AlienInvasion()
     ai.run_game()
