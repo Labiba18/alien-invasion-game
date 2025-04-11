@@ -28,6 +28,8 @@ class Ship:
             self.image, (self.settings.ship_w, self.settings.ship_h)
         )
 
+        self.image = pygame.transform.rotate(self.image, -90)
+
         # Start the ship at the left-center of the screen
         self.rect = self.image.get_rect()
         self.rect.midleft = self.boundaries.midleft
