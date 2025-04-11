@@ -13,21 +13,29 @@ class Alien(Sprite):
         self.boundaries = game.screen.get_rect()
         self.settings = game.settings
 
-        # Load the alien image and flip it to face left/right
+        # Load, scale, and rotate the alien image to face left
         self.image = pygame.image.load(self.settings.alien_file)
         self.image = pygame.transform.scale(
             self.image,
             (self.settings.alien_w, self.settings.alien_h)
         )
-        self.image = pygame.transform.rotate(self.image, -90)  # Rotate 90 degrees clockwise
+        self.image = pygame.transform.rotate(self.image, -90)  # Rotate to face left
 
-        # Get the rect and move the alien to the right side of the screen
         self.rect = self.image.get_rect()
-        self.rect.x = self.boundaries.right - self.rect.width - 10  # 10 pixels from the edge
+
+        # Place the alien on the right side of the screen
+        self.rect.right = self.boundaries.right
         self.rect.y = y
 
+        self.y = float(self.rect.y)
+        self.x = float(self.rect.x)
+
     def update(self) -> None:
-        pass
+        """Move the alien downward on the screen."""
+        temp_speed = self.settings.fleet_speed
+        self.y += temp_speed
+        self.rect.y = self.y
 
     def draw_alien(self) -> None:
+        """Draw the alien on the screen."""
         self.screen.blit(self.image, self.rect)
