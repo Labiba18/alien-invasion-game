@@ -10,7 +10,8 @@ import pygame
 from settings import Settings
 from ship import Ship
 from arsenal import Arsenal
-from alien import Alien
+# from alien import Alien
+from alien_fleet import AlienFleet
 
 
 class AlienInvasion:
@@ -30,14 +31,15 @@ class AlienInvasion:
 
         self.ship = Ship(self, Arsenal(self))
         self.laser_sound = pygame.mixer.Sound(self.settings.laser_sound)
-        self.alien=Alien(self, 10,10)
+        self.alien_fleet = AlienFleet(self)
+        self.alien_fleet.create_fleet()
 
     def run_game(self):
         """Start the main game loop."""
         while self.running:
             self._check_events()
             self.ship.update()
-            self.alien.update()
+            # self.alien.update()
             self._update_screen()
             self.clock.tick(self.settings.FPS)
 
@@ -79,7 +81,7 @@ class AlienInvasion:
         """Redraw the screen during each pass through the loop."""
         self.screen.blit(self.settings.bg_file, (0, 0))
         self.ship.draw()
-        self.alien.draw_alien()
+        self.alien_fleet.draw()
         self.ship.arsenal.draw()
         pygame.display.flip()
 
