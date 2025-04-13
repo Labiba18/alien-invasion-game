@@ -21,15 +21,16 @@ class AlienFleet:
 
         fleet_h = self.calculate_fleet_size(alien_h, screen_h)
 
-        # Vertical space and positioning
         fleet_vertical_space = fleet_h * alien_h
         y_offset = int((screen_h - fleet_vertical_space) // 2)
 
         for row in range(fleet_h):
+            if row % 2 == 0:
+                continue  # Space out the aliens vertically
             current_y = alien_h * row + y_offset
-            self._create_alien(self.settings.screen_w - 40, current_y)  # Right edge, x=screen width - buffer
+            self._create_alien(self.settings.screen_w - alien_h, current_y)
 
-    def calculate_fleet_size(self, alien_h, screen_h) -> int:
+    def calculate_fleet_size(self, alien_h, screen_h):
         fleet_h = screen_h // alien_h
         if fleet_h % 2 == 0:
             fleet_h -= 1
@@ -42,6 +43,6 @@ class AlienFleet:
         self.fleet.add(new_alien)
 
     def draw(self) -> None:
-        """Draw each alien in the fleet."""
+        """Draw all aliens in the fleet to the screen."""
         for alien in self.fleet:
             alien.draw_alien()
