@@ -20,6 +20,7 @@ class Ship:
         )
         self.rect = self.image.get_rect()
         self.rect.midbottom = self.boundaries.midbottom
+        self.rect.y -= 30
 
         self.moving_right = False
         self.moving_left = False
