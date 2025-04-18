@@ -10,37 +10,34 @@ class AlienFleet:
         self.game = game
         self.settings = game.settings
         self.fleet = pygame.sprite.Group()
-        self.fleet_direction = self.settings.fleet_direction
-        self.fleet_drop_speed = self.settings.fleet_drop_speed
 
-        self.create_fleet()
+        self._create_fleet()
 
-    def create_fleet(self) -> None:
+    def _create_fleet(self) -> None:
         alien_w = self.settings.alien_w
+        alien_h = self.settings.alien_h
         screen_w = self.settings.screen_w
+        screen_h = self.settings.screen_h
 
-        fleet_w = self.calculate_fleet_size(alien_w, screen_w)
-        fleet_horizontal_space = fleet_w * alien_w
-        x_offset = int((screen_w - fleet_horizontal_space) // 2)
+        cols = 14  # 14 aliens per row
+        rows = 4   # 4 rows
 
-        for col in range(fleet_w):
-            if col % 2 == 0:
-                continue  # This skips even columns for spacing
-            current_x = alien_w * col + x_offset
-            self._create_alien(current_x, 10)
+        # Calculate total width and height of fleet
+        total_w = cols * alien_w
+        total_h = rows * alien_h
 
-    def calculate_fleet_size(self, alien_w, screen_w) -> int:
-        fleet_w = screen_w // alien_w
+        # Calculate even horizontal and vertical spacing
+        x_margin = (screen_w - total_w) // (cols + 1)
+        y_margin = (screen_h // 2 - total_h) // (rows + 1)
 
-        if fleet_w % 2 == 0:
-            fleet_w -= 1
-        else:
-            fleet_w -= 2
+        for row in range(rows):
+            for col in range(cols):
+                x = x_margin + col * (alien_w + x_margin)
+                y = y_margin + row * (alien_h + y_margin)
+                self._create_alien(x, y)
 
-        return fleet_w
-
-    def _create_alien(self, current_x: int, current_y: int) -> None:
-        new_alien = Alien(self.game, current_x, current_y)
+    def _create_alien(self, x: int, y: int) -> None:
+        new_alien = Alien(self.game, x, y)
         self.fleet.add(new_alien)
 
     def update(self) -> None:
