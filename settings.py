@@ -3,6 +3,7 @@
 # Description: Stores all settings and configuration for the Alien Invasion game.
 
 from pathlib import Path
+import pygame
 
 class Settings:
     def __init__(self) -> None:
@@ -15,6 +16,7 @@ class Settings:
 
         # Background image
         self.bg_file = Path.cwd() / 'Assets' / 'images' / 'Starbasesnow.png'
+        self.bg_image = pygame.image.load(self.bg_file)
 
         # Ship settings
         self.ship_file = Path.cwd() / 'Assets' / 'images' / 'white_ship.png'
@@ -34,8 +36,8 @@ class Settings:
 
         # Alien settings
         self.alien_file = Path.cwd() / 'Assets' / 'images' / 'enemy_4.png'
-        self.alien_speed = 3
+        self.alien_speed = 2
         self.fleet_direction = 1  # 1 for right, -1 for left
-        self.fleet_drop_speed = 10  # can be any number, used later when moving fleet
+        self.fleet_drop_speed = 10  # used later when moving fleet
         self.alien_w = 50
         self.alien_h = 50

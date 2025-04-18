@@ -5,7 +5,6 @@
 # Description: This is the main game file. It initializes the game window,
 # checks user inputs, updates object positions, and draws everything on screen.
 
-import sys
 import pygame
 from settings import Settings
 from ship import Ship
@@ -13,75 +12,42 @@ from arsenal import Arsenal
 from alien_fleet import AlienFleet
 
 class AlienInvasion:
-    def __init__(self) -> None:
+    def __init__(self):
         pygame.init()
         self.settings = Settings()
-
         self.screen = pygame.display.set_mode(
-            (self.settings.screen_w, self.settings.screen_h)
-        )
-        pygame.display.set_caption(self.settings.name)
-
-        self.bg = pygame.image.load(self.settings.bg_file)
-        self.bg = pygame.transform.scale(
-            self.bg, (self.settings.screen_w, self.settings.screen_h)
-        )
-
-        self.running = True
-        self.clock = pygame.time.Clock()
-
-        pygame.mixer.init()
-        self.laser_sound = pygame.mixer.Sound(self.settings.laser_sound)
-        self.laser_sound.set_volume(0.7)
+            (self.settings.screen_w, self.settings.screen_h))
+        pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self, Arsenal(self))
-        self.aliens = AlienFleet(self)  # NEW: full fleet
+        self.aliens = AlienFleet(self)  # fleet now managed in alien_fleet.py
 
-    def run_game(self) -> None:
+        self.clock = pygame.time.Clock()
+        self.running = True
+
+    def run_game(self):
         while self.running:
             self._check_events()
-            self.ship.update()
-            self.ship.arsenal.update_arsenal()
-            #self.aliens.update()  # NEW: update fleet
             self._update_screen()
-            self.clock.tick(self.settings.FPS)
+            self.clock.tick(60)
 
-    def _update_screen(self) -> None:
-        self.screen.blit(self.bg, (0, 0))
-        self.ship.draw()
-        self.ship.arsenal.draw()
-        self.aliens.draw()  # NEW: draw fleet
-        pygame.display.flip()
-
-    def _check_events(self) -> None:
+    def _check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-                pygame.quit()
-                sys.exit()
             elif event.type == pygame.KEYDOWN:
-                self._check_keydown_events(event)
+                self.ship.handle_keydown(event.key)
             elif event.type == pygame.KEYUP:
-                self._check_keyup_events(event)
+                self.ship.handle_keyup(event.key)
 
-    def _check_keyup_events(self, event) -> None:
-        if event.key == pygame.K_RIGHT:
-            self.ship.moving_right = False
-        elif event.key == pygame.K_LEFT:
-            self.ship.moving_left = False
+    def _update_screen(self):
+        self.screen.blit(self.settings.bg_image, (0, 0))
+        self.ship.update()
+        self.ship.draw()
+        self.aliens.update()  # <-- Update alien movement
+        self.aliens.draw()
 
-    def _check_keydown_events(self, event) -> None:
-        if event.key == pygame.K_RIGHT:
-            self.ship.moving_right = True
-        elif event.key == pygame.K_LEFT:
-            self.ship.moving_left = True
-        elif event.key == pygame.K_SPACE:
-            if self.ship.fire():
-                self.laser_sound.play()
-                self.laser_sound.fadeout(250)
-        elif event.key == pygame.K_q:
-            self.running = False
-            pygame.quit()
+        pygame.display.flip()
 
 if __name__ == '__main__':
     ai = AlienInvasion()

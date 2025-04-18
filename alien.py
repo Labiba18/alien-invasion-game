@@ -9,26 +9,20 @@ class Alien(Sprite):
 
         self.image = pygame.image.load(self.settings.alien_file)
         self.image = pygame.transform.scale(
-            self.image, (self.settings.alien_w, self.settings.alien_h)
-        )
+            self.image, (self.settings.alien_w, self.settings.alien_h))
         self.rect = self.image.get_rect()
 
         self.rect.x = x
         self.rect.y = y
         self.x = float(self.rect.x)
 
-        # Direction: 1 is right, -1 is left
-        self.direction = 1
-
-    def update(self):
-        self.x += self.direction * self.settings.alien_speed
+    def update(self, direction: int) -> None:
+        self.x += direction * self.settings.alien_speed
         self.rect.x = self.x
 
-        # Change direction if hitting edge
-        if self.rect.right >= self.screen.get_rect().right:
-            self.direction = -1
-        elif self.rect.left <= 0:
-            self.direction = 1
-
-    def draw_alien(self):
+    def draw_alien(self) -> None:
         self.screen.blit(self.image, self.rect)
+
+    def is_at_edge(self) -> bool:
+        screen_rect = self.screen.get_rect()
+        return self.rect.right >= screen_rect.right or self.rect.left <= 0
