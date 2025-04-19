@@ -67,3 +67,7 @@ class AlienFleet:
     def reset_fleet_to_top(self) -> None:
         """Reset all aliens to their starting positions at the top of the screen."""
         self._create_fleet()
+
+    def check_destroy_status(self) -> bool:
+        """Return True if the fleet is empty (all aliens destroyed)."""
+        return not self.fleet
