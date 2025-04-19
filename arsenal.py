@@ -15,6 +15,7 @@ class Arsenal:
         self.game = game
         self.settings = game.settings
         self.arsenal = pygame.sprite.Group()
+        self.laser_sound = pygame.mixer.Sound(self.settings.laser_sound)
 
     def update_arsenal(self) -> None:
         self.arsenal.update()
@@ -33,6 +34,7 @@ class Arsenal:
         if len(self.arsenal) < self.settings.bullet_amount:
             new_bullet = Bullet(self.game, self.game.ship)
             self.arsenal.add(new_bullet)
+            self.laser_sound.play()
             return True
         return False
     

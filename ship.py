@@ -5,29 +5,53 @@
 
 
 import pygame
+from pygame.sprite import Sprite
 
-class Ship:
-    def __init__(self, game, arsenal):
+class Ship(Sprite):
+    def __init__(self, game, arsenal) -> None:
+        super().__init__()
         self.screen = game.screen
         self.settings = game.settings
+        self.boundaries = self.screen.get_rect()
 
         self.image = pygame.image.load(self.settings.ship_file)
         self.image = pygame.transform.scale(
-            self.image, (self.settings.ship_w, self.settings.ship_h)
-        )
+            self.image, (self.settings.ship_w, self.settings.ship_h))
         self.rect = self.image.get_rect()
-        self.screen_rect = self.screen.get_rect()
 
-        # Start at bottom center
-        self.rect.midbottom = self.screen_rect.midbottom
-        self.y = float(self.rect.y)
+        self.rect.midbottom = self.boundaries.midbottom
+        self.x = float(self.rect.x)
 
-        # Arsenal (like bullets, etc.)
+        self.moving_right = False
+        self.moving_left = False
+
         self.arsenal = arsenal
 
-    def update(self):
-        # If needed, update movement logic here
-        pass
+    def center_ship(self) -> None:
+        self.rect.midbottom = self.boundaries.midbottom
+        self.x = float(self.rect.x)
 
-    def draw(self):
+    def update(self) -> None:
+        self._update_ship_movement()
+        self.arsenal.update_arsenal()
+
+    def _update_ship_movement(self) -> None:
+        temp_speed = self.settings.ship_speed
+        if self.moving_right and self.rect.right < self.boundaries.right:
+            self.x += temp_speed
+        if self.moving_left and self.rect.left > self.boundaries.left:
+            self.x -= temp_speed
+        self.rect.x = self.x
+
+    def draw(self) -> None:
+        self.arsenal.draw()
         self.screen.blit(self.image, self.rect)
+
+    def fire_laser(self) -> None:
+        self.arsenal.fire_bullet()
+
+    def check_collisions(self, other_group) -> bool:
+        if pygame.sprite.spritecollideany(self, other_group):
+            self.center_ship()
+            return True
+        return False

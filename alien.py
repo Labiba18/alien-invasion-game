@@ -15,6 +15,7 @@ class Alien(Sprite):
         self.rect.x = x
         self.rect.y = y
         self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
 
     def update(self, direction: int) -> None:
         self.x += direction * self.settings.alien_speed
@@ -26,3 +27,9 @@ class Alien(Sprite):
     def is_at_edge(self) -> bool:
         screen_rect = self.screen.get_rect()
         return self.rect.right >= screen_rect.right or self.rect.left <= 0
+
+    def reset_position(self, x: int, y: int) -> None:
+        self.rect.x = x
+        self.rect.y = y
+        self.x = float(x)
+        self.y = float(y)
