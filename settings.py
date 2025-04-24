@@ -46,3 +46,7 @@ class Settings:
         self.fleet_drop_speed = 40               # Pixels aliens drop when hitting an edge
         self.alien_w = 50                        # Alien width
         self.alien_h = 50                        # Alien height
+
+        self.button_font_size = 48
+        self.HUD_font_size = 20
+        self.font_file = Path.cwd() / 'Assets' / 'Fonts' / 'Silkscreen' / 'Silkscreen-Bold.ttf'
