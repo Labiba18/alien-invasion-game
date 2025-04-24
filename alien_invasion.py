@@ -13,6 +13,7 @@ from ship import Ship
 from arsenal import Arsenal
 from alien_fleet import AlienFleet
 from game_stats import GameStats
+from button import Button
 
 class AlienInvasion:
     """Main class to manage game behavior and main loop."""
@@ -25,7 +26,8 @@ class AlienInvasion:
         self.settings = Settings()
         self.bg_image = pygame.image.load(self.settings.bg_file)
         self.screen = pygame.display.set_mode(
-            (self.settings.screen_w, self.settings.screen_h))
+            (self.settings.screen_w, self.settings.screen_h)
+        )
         pygame.display.set_caption("Alien Invasion")
 
         self.game_stats = GameStats(self.settings.starting_ship_count)
@@ -36,7 +38,8 @@ class AlienInvasion:
         self.laser_sound = pygame.mixer.Sound(self.settings.laser_sound)
         self.impact_sound = pygame.mixer.Sound(self.settings.impact_sound)
 
-        self.game_active = True
+        self.play_button = Button(self, 'Play')
+        self.game_active = False
         self.running = True
 
     def run_game(self) -> None:
@@ -61,6 +64,8 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self._check_button_clicked()
 
     def _check_keydown_events(self, event) -> None:
         """Handle keydown events for ship movement and shooting."""
@@ -86,6 +91,13 @@ class AlienInvasion:
         self.ship.draw()
         self.ship.arsenal.draw()
         self.alien_fleet.draw()
+
+        if not self.game_active:
+            self.play_button.draw()
+            pygame.mouse.set_visible(True)
+        else:
+            pygame.mouse.set_visible(False)
+
         pygame.display.flip()
 
     def _check_collisions(self) -> None:
@@ -117,6 +129,18 @@ class AlienInvasion:
         else:
             self.game_active = False
 
+    def _check_button_clicked(self) -> None:
+        """Start game if Play button was clicked."""
+        mouse_pos = pygame.mouse.get_pos()
+        if self.play_button.check_clicked(mouse_pos):
+            self.restart_game()
+
+    def restart_game(self) -> None:
+        """Restart the game from the beginning."""
+        self._reset_level()
+        self.ship.center_ship()
+        self.game_active = True
+        pygame.mouse.set_visible(False)
 
 if __name__ == '__main__':
     ai = AlienInvasion()
