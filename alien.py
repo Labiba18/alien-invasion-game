@@ -43,7 +43,7 @@ class Alien(Sprite):
         Parameters:
         direction (int): 1 to move right, -1 to move left.
         """
-        self.x += direction * self.settings.alien_speed
+        self.x += direction * self.settings.fleet_speed
         self.rect.x = self.x
 
     def draw_alien(self) -> None:

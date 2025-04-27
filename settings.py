@@ -19,21 +19,16 @@ class Settings:
 
         # Background image
         self.bg_file = Path.cwd() / 'Assets' / 'images' / 'Starbasesnow.png'
+        self.difficulty_scale = 1.1
         self.bg_image = pygame.image.load(self.bg_file)
 
         # Ship settings
         self.ship_file = Path.cwd() / 'Assets' / 'images' / 'white_ship.png'
         self.ship_w = 70                         # Ship width
         self.ship_h = 90                         # Ship height
-        self.ship_speed = 5                      # Ship movement speed
-        self.starting_ship_count = 3             # Number of lives the player starts with
 
         # Bullet settings
         self.bullet_file = Path.cwd() / 'Assets' / 'images' / 'laserBlast.png'
-        self.bullet_speed = 15                   # Speed at which bullets travel
-        self.bullet_w = 25                       # Bullet width
-        self.bullet_h = 80                       # Bullet height
-        self.bullet_amount = 5                   # Max bullets allowed on screen at a time
 
         # Sound settings
         self.laser_sound = Path.cwd() / 'Assets' / 'sound' / 'laser.mp3'
@@ -41,9 +36,7 @@ class Settings:
 
         # Alien settings
         self.alien_file = Path.cwd() / 'Assets' / 'images' / 'enemy_4.png'
-        self.alien_speed = 2                     # Speed of alien movement
         self.fleet_direction = 1                 # 1 for right, -1 for left movement
-        self.fleet_drop_speed = 40               # Pixels aliens drop when hitting an edge
         self.alien_w = 50                        # Alien width
         self.alien_h = 50                        # Alien height
 
@@ -53,3 +46,21 @@ class Settings:
         self.button_color = (0, 135, 50)
         self.text_color = (255, 255, 255)
         self.button_font_size = 48
+
+    def initialize_dynamic_settings(self) -> None:
+        """Initialize settings that change throughout the game."""
+        self.ship_speed = 5
+        self.starting_ship_count = 3
+
+        self.bullet_w = 25
+        self.bullet_h = 80
+        self.bullet_speed = 7
+        self.bullet_amount = 5
+
+        self.fleet_speed = 2
+        self.fleet_drop_speed = 40
+
+    def increase_difficulty(self) -> None:
+        self.ship_speed *= self.difficulty_scale
+        self.bullet_speed *= self.difficulty_scale
+        self.fleet_speed *= self.difficulty_scale

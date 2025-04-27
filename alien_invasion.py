@@ -24,6 +24,7 @@ class AlienInvasion:
         self.clock = pygame.time.Clock()
 
         self.settings = Settings()
+        self.settings.initialize_dynamic_settings()
         self.bg_image = pygame.image.load(self.settings.bg_file)
         self.screen = pygame.display.set_mode(
             (self.settings.screen_w, self.settings.screen_h)
