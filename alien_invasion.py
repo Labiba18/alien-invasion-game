@@ -31,7 +31,7 @@ class AlienInvasion:
         )
         pygame.display.set_caption("Alien Invasion")
 
-        self.game_stats = GameStats(self.settings.starting_ship_count)
+        self.game_stats = GameStats(self)
         self.ship = Ship(self, Arsenal(self))
         self.alien_fleet = AlienFleet(self)
         self.alien_fleet.create_fleet()
@@ -113,10 +113,12 @@ class AlienInvasion:
         if collisions:
             self.impact_sound.play()
             self.impact_sound.fadeout(500)
+            self.game_stats.update(collisions)
 
         if self.alien_fleet.check_destroy_status():
             self._reset_level()
             self.settings.increase_difficulty()
+            self.game_stats.update_level()
 
     def _reset_level(self) -> None:
         """Reset the level by respawning the alien fleet."""
@@ -140,6 +142,7 @@ class AlienInvasion:
     def restart_game(self) -> None:
         """Restart the game from the beginning."""
         self.settings.initialize_dynamic_settings()
+        self.game_stats.reset_stats()
         self._reset_level()
         self.ship.center_ship()
         self.game_active = True
