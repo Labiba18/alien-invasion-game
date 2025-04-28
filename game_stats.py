@@ -63,6 +63,9 @@ class GameStats:
             self.score += self.settings.alien_points
         # print(f'Basic: {self.score}')
 
+    def update_level(self) -> None:
+        self.level += 1
+
     def _update_max_score(self) -> None:
         """Update the max score."""
         if self.score > self.max_score:
