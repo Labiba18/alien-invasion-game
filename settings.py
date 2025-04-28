@@ -21,6 +21,7 @@ class Settings:
         self.bg_file = Path.cwd() / 'Assets' / 'images' / 'Starbasesnow.png'
         self.difficulty_scale = 1.1
         self.scores_file = Path.cwd() / 'Assets' / 'file' / 'scores.json'
+        self.HUD_font_size = 25
         self.bg_image = pygame.image.load(self.bg_file)
 
         # Ship settings

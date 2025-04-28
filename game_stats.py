@@ -24,7 +24,7 @@ class GameStats:
     def init_saved_scores(self) -> None:
         """Initialize saved high scores."""
         self.path = self.settings.scores_file
-        if self.path.exists() and self.path.stat().st_size > 0:
+        if self.path.exists() and self.path.stat().st_size > 20:
             contents = self.path.read_text()
             if not contents:
                 print('file empty')
