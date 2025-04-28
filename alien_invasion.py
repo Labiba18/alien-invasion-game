@@ -1,8 +1,9 @@
-# alien_invasion.py
-# Author: Labiba Alam
-# Date: 4/1/25
-# Lab 13 - Option 2: Change Alien Formation
-# Description: Main file for Alien Invasion.
+"""alien_invasion.py
+Author: Labiba Alam
+Date: 4/1/25
+Lab 14 - Option 2
+Description: Main file for Alien Invasion.
+"""
 
 import sys
 import pygame
@@ -26,7 +27,10 @@ class AlienInvasion:
         self.settings = Settings()
         self.settings.initialize_dynamic_settings()
 
-        self.bg_image = pygame.image.load(self.settings.bg_file)
+        self.bg_image = pygame.transform.scale(
+            pygame.image.load(self.settings.bg_file),
+            (self.settings.screen_w, self.settings.screen_h)
+        )
         self.screen = pygame.display.set_mode(
             (self.settings.screen_w, self.settings.screen_h)
         )

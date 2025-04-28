@@ -1,6 +1,7 @@
-# game_stats.py
-# Name: GameStats Class for Alien Invasion Game
-# Description: Tracks the number of ships the player has left in the game.
+"""game_stats.py
+Name: GameStats Class for Alien Invasion Game
+Description: Tracks the number of ships the player has left in the game.
+"""
 
 from pathlib import Path
 import json

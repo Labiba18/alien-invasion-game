@@ -1,8 +1,9 @@
-# arsenal.py
-# Name: Arsenal Class for Alien Invasion Game
-# Description: Manages the group of bullets (arsenal) in the Alien Invasion game.
-#              Handles updating bullet positions, removing off-screen bullets,
-#              drawing bullets, and firing new bullets based on settings.
+"""arsenal.py
+Name: Arsenal Class for Alien Invasion Game
+Description: Manages the group of bullets (arsenal) in the Alien Invasion game.
+Handles updating bullet positions, removing off-screen bullets,
+drawing bullets, and firing new bullets based on settings.
+"""
 
 import pygame
 from bullet import Bullet

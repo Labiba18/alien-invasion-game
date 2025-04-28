@@ -1,6 +1,7 @@
-# alien.py
-# Name: Alien Class for Alien Invasion Game
-# Description: Defines the alien sprite's behavior including appearance, movement, edge detection, and resetting position.
+"""alien.py
+Name: Alien Class for Alien Invasion Game
+Description: Defines the alien sprite’s behavior including appearance, movement, edge detection, and resetting position.
+"""
 
 import pygame
 from pygame.sprite import Sprite
@@ -21,18 +22,15 @@ class Alien(Sprite):
         self.screen = game.screen
         self.settings = game.settings
 
-        # Load and scale the alien image
         self.image = pygame.image.load(self.settings.alien_file)
         self.image = pygame.transform.scale(
             self.image, (self.settings.alien_w, self.settings.alien_h)
         )
         self.rect = self.image.get_rect()
 
-        # Position the alien at (x, y)
         self.rect.x = x
         self.rect.y = y
-
-        # Store precise position for movement
+        
         self.x = float(self.rect.x)
         self.y = float(self.rect.y)
 

@@ -1,8 +1,9 @@
-# alien_fleet.py
-# Name: AlienFleet Class for Alien Invasion Game
-# Description: Manages the alien fleet's creation, movement, edge detection, 
-#              collision detection, reset, and destruction checks. 
-#              Includes custom formation logic (X-shaped pattern).
+"""alien_fleet.py
+Name: AlienFleet Class for Alien Invasion Game
+Description: Manages the alien fleet's creation, movement, edge detection,
+             collision detection, reset, and destruction checks.
+             Includes custom formation logic (X-shaped pattern).
+"""
 
 import pygame
 from pygame.sprite import Group
@@ -37,7 +38,6 @@ class AlienFleet:
 
         for row in range(rows):
             for col in range(cols):
-                # Add alien only if it's on the X diagonal
                 if col == row or col == (cols - 1 - row):
                     x = offset_x + col * (alien_w + spacing_x)
                     y = offset_y + row * (alien_h + spacing_y)

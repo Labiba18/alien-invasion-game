@@ -1,7 +1,9 @@
-# ship.py
-# Name: Ship Class for Alien Invasion Game
-# Description: Defines the spaceship’s behavior including loading the image,
-#              starting position, movement (left and right), and firing bullets.
+"""
+ship.py
+Name: Ship Class for Alien Invasion Game
+Description: Defines the spaceship’s behavior including loading the image,
+             starting position, movement (left and right), and firing bullets.
+"""
 
 import pygame
 from pygame.sprite import Sprite
